@@ -101,7 +101,7 @@ let consensus (list : 'a list) : 'a consensus =
    consensus [1; 1; 2; 2] = No_consensus
  *)
 
-(* return the consensus sequence of a list of sequence : for each position
+(* return the consensus sequence of a list of sequences : for each position
    in the elements of ll, compute the consensus  of the set of values at this
    position  in the sequences. the lists must be of same length. if all lists
    are empty, return the empty sequence.
@@ -116,4 +116,6 @@ let consensus_sequence (ll : 'a list list) : 'a consensus list =
                      [1; 1; 2; 2];
                      [1; 2; 2; 2]]
  = [Full 1; Partial (1, 3); No_consensus; Partial (2, 3)]
+
+ consensus_sequence [[]; []; []] = []
  *)
