@@ -91,7 +91,7 @@ type 'a consensus = Full of 'a | Partial of 'a * int | No_consensus
 (* return (Full a) if all elements of the list are equal to a,
    (Partial (a, n)) if a is the only element of the list with the
    greatest number of occurrences and this number is equal to n,
-   No_consensus otherwise. the list must be non-empty *)
+   No_consensus otherwise. *)
 let consensus (list : 'a list) : 'a consensus =
   failwith "À compléter"
 
