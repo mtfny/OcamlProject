@@ -75,7 +75,7 @@ let rec slices_between
   failwith "A faire"
 
 (*
-  slices_between [1; 1] [1; 2] [1; 1; 1; 1; 2; 1; 3; 1; 2] = [[1]; []; [2; 1; 3]]
+  slices_between [1; 1] [1; 2] [1; 1; 1; 1; 2; 1; 3; 1; 2] = [[1]]
  *)
 
 let cut_genes (dna : dna) : (dna list) =
