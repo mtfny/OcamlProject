@@ -11,7 +11,7 @@ type dna = base list
 
 let string_of_base (b : base) : string =
   match b with
-    A -> "A"
+  | A -> "A"
   | C -> "C"
   | G -> "G"
   | T -> "T"
@@ -19,14 +19,27 @@ let string_of_base (b : base) : string =
 
 
 (* explode a string into a char list *)
+let rec explode_aux str l i = 
+  if i = String.length str then 
+    l
+  else 
+    explode_aux str (str.[i]::l) (i+1)
+
+
 let explode (str : string) : char list =
-  failwith "À compléter"
+  List.rev (explode_aux str [] 0)
 
 
 (* conversions *)
 let base_of_char (c : char) : base =
-  failwith "À compléter"
+  match c with 
+  | 'A' -> A
+  | 'C' -> C
+  | 'G' -> G
+  | 'T' -> T
+  | _ -> WC 
 
+  let x = base_of_char 'A';;
 
 let dna_of_string (s : string) : base list =
   failwith "À compléter"
