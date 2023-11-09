@@ -7,7 +7,7 @@ Pour commencer, installez le gestionnaire de paquets [`opam`](https://opam.ocaml
 ## Installation des paquets
 
 Placez-vous dans le répertoire cloné.
-De là, exécutez les commandes suivantes, qui créent un switch `opam` local en y installation les paquets nécessaires :
+De là, exécutez les commandes suivantes, qui créent un switch `opam` local en y installant les paquets nécessaires :
 
 ```
 opam update
