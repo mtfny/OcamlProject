@@ -41,12 +41,14 @@ let base_of_char (c : char) : base =
 
   let x = base_of_char 'A';;
 
-let dna_of_string (s : string) : base list =
-  failwith "À compléter"
+let dna_of_string (s : string) : base list = (*on on converti la chaine en tableau puis on convertit les caractères en base nucléique*)
+  List.map base_of_char (explode s)
 
 
-let string_of_dna (seq : dna) : string =
-  failwith "À compléter"
+let rec string_of_dna (seq : dna) : string =
+  match seq with
+  | [] -> ""
+  |base :: rest -> (string_of_base base)^(string_of_dna rest)
 
 
 
