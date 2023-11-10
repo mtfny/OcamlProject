@@ -38,8 +38,7 @@ let base_of_char (c : char) : base =
   | 'G' -> G
   | 'T' -> T
   | _ -> WC 
-
-  let x = base_of_char 'A';;
+;;
 
 let dna_of_string (s : string) : base list = (*on on converti la chaine en tableau puis on convertit les caractères en base nucléique*)
   List.map base_of_char (explode s)
