@@ -74,15 +74,27 @@ let rec cut_prefix (slice : 'a list) (list : 'a list) : 'a list option =
   cut_prefix [1; 2; 0] [1; 2; 3; 4] = None
  *)
 
+(*
+  Fonction auxilière pour first_occ   
+*)
+let rec first_occ_aux (slice : 'a list) (before : 'a list) (after : 'a list): ('a list * 'a list) option =
+  match slice, after with 
+  | [], _ -> Some (slice, after)
+  |_ , [] -> None
+  | _ , (tete :: reste) -> (
+    let tmp = cut_prefix slice after in
+    match tmp with 
+    | None -> first_occ_aux slice (tete::before) reste 
+    | Some l -> Some ((List.rev before), l) 
+  )
+
 
 (* return the prefix and the suffix of the first occurrence of a slice,
    or None if this occurrence does not exist.
 *)
-let first_occ (slice : 'a list) (list : 'a list) : ('a list * 'a list) option =
-  match (slice,list) with
-  |([],_) -> Some list
-  | (e::rest, []) -> None 
-  failwith "À faire"
+let first_occ (slice : 'a list) (list : 'a list)
+    : ('a list * 'a list) option =
+    first_occ_aux slice [] list 
 (*
   first_occ [1; 2] [1; 1; 1; 2; 3; 4; 1; 2] = Some ([1; 1], [3; 4; 1; 2])
   first_occ [1; 1] [1; 1; 1; 2; 3; 4; 1; 2] = Some ([], [1; 2; 3; 4; 1; 2])
@@ -92,14 +104,22 @@ let first_occ (slice : 'a list) (list : 'a list) : ('a list * 'a list) option =
 
 let rec slices_between
           (start : 'a list) (stop : 'a list) (list : 'a list) : 'a list list =
-  failwith "A faire"
+  let l1 = first_occ start list in
+  match l1 with 
+  | None -> []
+  | Some (before, after) -> 
+    let l2 = first_occ stop after in
+    match l2 with
+    | None -> [] 
+    | Some(before_bis, after_bis) -> before_bis :: (slices_between start stop after_bis)
 
 (*
   slices_between [1; 1] [1; 2] [1; 1; 1; 1; 2; 1; 3; 1; 2] = [[1]]
  *)
 
 let cut_genes (dna : dna) : (dna list) =
-  failwith "A faire"
+  let dna_list = explode (string_of_dna dna) in
+  slices_between [A; T; G] [T; A; A] (List.map base_of_char dna_list)
 
 (*---------------------------------------------------------------------------*)
 (*                          CONSENSUS SEQUENCES                              *)
