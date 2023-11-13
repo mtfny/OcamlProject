@@ -78,14 +78,16 @@ let rec cut_prefix (slice : 'a list) (list : 'a list) : 'a list option =
   Fonction auxilière pour first_occ   
 *)
 let rec first_occ_aux (slice : 'a list) (before : 'a list) (after : 'a list): ('a list * 'a list) option =
-  match after with 
-  | [] -> None 
-  | tete :: reste -> 
-    if cut_prefix slice after = None then 
-      first_occ_aux slice (tete::slice) after 
-    else
-      Some (before, after)
-;;
+  match slice, after with 
+  | [], _ -> Some (slice, after)
+  |_ , [] -> None
+  | _ , (tete :: reste) -> (
+    let tmp = cut_prefix slice after in
+    match tmp with 
+    | None -> first_occ_aux slice (tete::before) reste 
+    | Some l -> Some ((List.rev before), l) 
+  )
+
 
 (* return the prefix and the suffix of the first occurrence of a slice,
    or None if this occurrence does not exist.
@@ -116,7 +118,8 @@ let rec slices_between
  *)
 
 let cut_genes (dna : dna) : (dna list) =
-  failwith "A faire"
+  let dna_list = explode (string_of_dna dna) in
+  slices_between [A; T; G] [T; A; A] (List.map base_of_char dna_list)
 
 (*---------------------------------------------------------------------------*)
 (*                          CONSENSUS SEQUENCES                              *)
