@@ -132,8 +132,26 @@ type 'a consensus = Full of 'a | Partial of 'a * int | No_consensus
    (Partial (a, n)) if a is the only element of the list with the
    greatest number of occurrences and this number is equal to n,
    No_consensus otherwise. *)
+
+(*Fonctions auxiliares pour consensus*)
+let rec counter (list : 'a list) (base : base) : int = 
+  match list with
+  | [] -> 0
+  |base :: rest -> 1 + counter rest base
+
+let max (a: int) (b:int) : () int =
+  if a = b then None
+  else
+  if a<b then 
+    b 
+  else a
+
 let consensus (list : 'a list) : 'a consensus =
-  failwith "À compléter"
+  let c1 = (max (counter A) (counter C)) in 
+  let c2 = (max (counter G) (counter T)) in
+  if c1 = -1 || c2 = -1 then No_consensus
+  else if c1 < c2 then
+    if c2 = List.length list then Full
 
 (*
    consensus [1; 1; 1; 1] = Full 1
