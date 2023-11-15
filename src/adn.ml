@@ -219,7 +219,7 @@ let rec fisrt_of_each_list_aux (ll : 'a list list) res =
   | tete :: reste -> (
     match tete with 
     | [] -> [] 
-    | tete_bis :: reste_bis  -> fisrt_of_each_list reste (tete_bis :: res)
+    | tete_bis :: reste_bis  -> fisrt_of_each_list_aux reste (tete_bis :: res)
   ) 
 
 let fisrt_of_each_list (ll : 'a list list) = 
@@ -230,13 +230,14 @@ let without_first l =
   | [] -> []
   | tete :: reste -> reste
 
-let rec without_first_of_each_list (ll : 'a list list) = 
+let without_first_of_each_list (ll : 'a list list) = 
   List.map without_first ll 
 
 
-let rec consensus_sequence_aux (ll : 'a list list) (res : 'a list) : 'a consensus list = 
+let rec consensus_sequence_aux (ll : 'a list list) (res : 'a consensus list) : 'a consensus list = 
   match ll with 
-  | [] -> res 
+  | [] -> res
+  | [] :: reste -> res 
   | _ -> consensus_sequence_aux (without_first_of_each_list ll) ((consensus(fisrt_of_each_list ll))::res)  
 
 
