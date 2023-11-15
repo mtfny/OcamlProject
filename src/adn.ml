@@ -132,8 +132,79 @@ type 'a consensus = Full of 'a | Partial of 'a * int | No_consensus
    (Partial (a, n)) if a is the only element of the list with the
    greatest number of occurrences and this number is equal to n,
    No_consensus otherwise. *)
+
+(*Fonctions auxiliares pour consensus*)
+
+
+(*Retourne true si l'element est égal aux elements de la liste*)
+let elm_match_l e l = 
+  match l with 
+  | [] -> false 
+  | tete :: reste -> if tete = e then true else false 
+
+
+let rec put_elm_in_ll (e: 'a) (ll :'a list list) : 'a list list = 
+  match ll with
+  | [] -> [[e]]
+  | l1 :: reste -> if (elm_match_l e l1) then ((e::l1)::reste) else (l1::(put_elm_in_ll e reste))
+
+let rec put_l_in_ll_aux (l: 'a list) (ll :'a list list) : 'a list list =
+  match l with 
+  | [] -> ll 
+  | tete :: reste -> put_l_in_ll_aux reste (put_elm_in_ll tete ll)
+
+let put_l_in_ll (l: 'a list) : 'a list list =
+  put_l_in_ll_aux l []
+
+let rec list_max_aux ll l= 
+  match ll with 
+  | [] -> l
+  | tete :: reste -> 
+    if (List.length tete) > (List.length l) then 
+      list_max_aux reste tete
+    else
+      list_max_aux reste l 
+
+let list_max ll = 
+  list_max_aux ll []  
+
+let rec list_max_only ll l cmp = 
+  match ll with 
+  | [] -> 
+    if cmp > 1 then false 
+    else true 
+  | tete :: reste -> 
+      if (List.length tete) = (List.length l) then 
+        list_max_only reste l (cmp+1)
+      else
+        list_max_only reste l cmp
+
+let max ll = 
+  let l_max = list_max ll in
+  let res = list_max_only ll l_max 0 in
+  if res then l_max else []
+
+
+(*
+let rec maximum_in_ll (ll : 'a list list) (list : 'a list) :'a list =
+    match ll with
+    | [] -> list
+    | e1 :: reste -> 
+      if List.length e1 = List.length list then maximum_in_ll reste []
+      else if List.length e1 > List.length list then maximum_in_ll reste e1
+      else maximum_in_ll reste list
+*)
 let consensus (list : 'a list) : 'a consensus =
-  failwith "À compléter"
+  match list with
+  | [] -> No_consensus
+  | tete :: reste -> 
+    let cons = max (put_l_in_ll list) in
+    match cons with
+    | [] -> No_consensus
+    | e::reste -> if List.length (e::reste) = List.length list then Full e else Partial (e,List.length (e::reste))
+
+ 
+
 
 (*
    consensus [1; 1; 1; 1] = Full 1
