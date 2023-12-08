@@ -14,10 +14,22 @@ let rec expr_repeat n e =
   Concat (e,(expr_repeat (n-1) e))
 
 let rec is_empty e =
-  failwith "À compléter"
+  match e with
+  | Eps -> true
+  | Base a -> false
+  | Joker -> false
+  | Concat (e1,e2) -> if is_empty e1 then is_empty e2 else false
+  | Alt(e1,e2) -> if is_empty e1 then is_empty e2 else false
+  | Star exp -> is_empty exp
 
 let rec null e =
-  failwith "À compléter"
+  match e with
+  | Eps -> true
+  | Base a -> false
+  | Joker -> false
+  | Concat (e1,e2) -> if null e1 then null e2 else false
+  | Alt(e1,e2) -> if null e1 then true else null e2
+  | Star exp -> true
 
 let rec is_finite e =
   failwith "À compléter"
