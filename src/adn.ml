@@ -166,9 +166,11 @@ let rec list_max_aux ll l=
     else
       list_max_aux reste l 
 
+(*Renvoie la liste la plus longue dans la liste de liste ll*)
 let list_max ll = 
   list_max_aux ll []  
 
+(*Revoie true si l est la seule liste de taille len(l) dans la liste de liste ll*)
 let rec list_max_only ll l cmp = 
   match ll with 
   | [] -> 
@@ -180,6 +182,7 @@ let rec list_max_only ll l cmp =
       else
         list_max_only reste l cmp
 
+(*Renvoie la liste la plus longue si elle est seule de à avoir cette taille *)
 let max ll = 
   let l_max = list_max ll in
   let res = list_max_only ll l_max 0 in
@@ -224,14 +227,18 @@ let rec fisrt_of_each_list_aux (ll : 'a list list) res =
     | tete_bis :: reste_bis  -> fisrt_of_each_list_aux reste (tete_bis :: res)
   ) 
 
+(*Renvoie la liste contenant le premier de chaque liste *)
 let fisrt_of_each_list (ll : 'a list list) = 
   fisrt_of_each_list_aux ll []
 
+(* Renvoie la liste l sans son premier élément*)
 let without_first l = 
   match l with 
   | [] -> []
   | tete :: reste -> reste
 
+(* Renvoie la liste de liste ou l'on retire le premier element de 
+   chacune d'entre elle *)
 let without_first_of_each_list (ll : 'a list list) = 
   List.map without_first ll 
 
