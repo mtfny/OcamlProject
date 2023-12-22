@@ -62,7 +62,7 @@ let rec enumerate alphabet e =
   | Eps -> Some [[]]  (* Le langage contenant seulement la chaîne vide *)
   | Base a -> if List.mem a alphabet then Some [[a]] else Some [] 
   | Star exp -> (*si le langage est fini on peut retourner quelque chose sinon None *)
-    if is_empty exp || null exp then Some [[]] else None
+    if is_finite exp then  None else Some [[]]
   | Joker -> Some (create_combinations alphabet) (*on applique la fonction avec chaque lettre de l'alphabet puisque le joker contient n'importe laquelle*)
   | Alt (e1, e2) -> 
       (match (enumerate alphabet e1, enumerate alphabet e2) with
