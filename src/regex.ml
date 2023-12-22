@@ -40,8 +40,30 @@ let rec is_finite e =
   | Alt(e1,e2) -> if is_finite e1 then is_finite e2 else false
   | Star exp -> if is_empty exp then true else false   (*l'expression e* est finie seulement si e est vide*)
 
-let product l1 l2 =
-  failwith "À compléter"
+
+let rec is_null ll = 
+  match ll with 
+  | [] -> true
+  | tete :: reste -> 
+    match tete with 
+    | [] -> is_null reste
+    | _ -> false 
+
+let rec product_aux l ll =
+  match l with 
+  |[] -> if is_null ll then [] else ll
+  |_ -> 
+    match ll with 
+    | [] -> []
+    | tete :: reste -> (union_sorted l tete) :: product_aux l reste
+
+
+let rec product l1 l2 =
+  match l1 with 
+  | [] -> product_aux [] l2
+  | [tete] -> product_aux tete l2
+  | tete :: reste -> union_sorted (product_aux tete l2) (product reste l2) 
+  
 
 let enumerate alphabet e =
   failwith "À compléter"
