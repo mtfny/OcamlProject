@@ -53,6 +53,7 @@ let rec product l1 l2 =
   match l1 with
   | [] -> []
   | tete1 :: reste1 ->
+      (*Renvoi la concaténation du premier element de l1 avec l2 *)
       let tmp = List.map (fun tete2 -> append tete1 tete2) l2 in
       append tmp (product reste1 l2)
 
@@ -88,6 +89,7 @@ let rec alphabet_expr e =
 type answer =
   Infinite | Accept | Reject
 
+(*Renvoie true si les deux listes sont equivalentes*)
 let rec list_match l1 l2 = 
   match l1,l2 with 
   | ([],[]) -> true 
@@ -99,6 +101,7 @@ let rec list_match l1 l2 =
     else 
       list_match reste1 reste2
 
+(*Renvoie true si la liste l se trouve dans la liste de liste ll*)
 let rec list_l_in_ll l ll = 
   match ll with 
   | [] -> false 
@@ -109,9 +112,11 @@ let rec list_l_in_ll l ll =
       list_l_in_ll l reste 
 
 let accept_partial e w =
-  let alphabet = sort_uniq (union_sorted (alphabet_expr e) w) in
+  (*On crée l'alphabet général à partie de l'alphabet de e et les lettres du mot w *)
+  let alphabet = sort_uniq (union_sorted (alphabet_expr e) w) in 
   let langage_reconnu = enumerate alphabet e in 
   match langage_reconnu with 
   | None -> Infinite
+  (*On vérifie si le mot appartient au langage reconnu*)
   | Some l -> if list_l_in_ll w l then Accept else Reject 
 
