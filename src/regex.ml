@@ -104,5 +104,31 @@ let rec alphabet_expr e =
 type answer =
   Infinite | Accept | Reject
 
+let rec list_match l1 l2 = 
+  match l1,l2 with 
+  | ([],[]) -> true 
+  | ([],_) -> false 
+  | (_,[]) -> false 
+  | (tete1 :: reste1 ,tete2 :: reste2) -> 
+    if tete != tete then 
+      false 
+    else 
+      list_match reste1 reste2
+
+
+
+
+let rec list_l_in_ll l ll = 
+  match ll with 
+  | [] -> false 
+  | tete :: reste -> 
+    if list_match l tete then 
+      true
+    else
+      list_l_in_ll l reste 
+
 let accept_partial e w =
-  failwith "À compléter"
+  let langage_reconnu = enumerate w e in 
+  match langage_reconnu with 
+  | None -> Infinite
+  | Some l -> if list_l_in_ll then Accept else Reject 
