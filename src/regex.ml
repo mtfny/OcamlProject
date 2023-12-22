@@ -32,7 +32,13 @@ let rec null e =
   | Star exp -> true
 
 let rec is_finite e =
-  failwith "À compléter"
+  match e with
+  | Eps -> true
+  | Base a -> true
+  | Joker -> true
+  | Concat (e1,e2) -> if is_finite e1 then is_finite e2 else false
+  | Alt(e1,e2) -> if is_finite e1 then is_finite e2 else false
+  | Star exp -> if is_empty exp then true else false   (*l'expression e* est finie seulement si e est vide*)
 
 let product l1 l2 =
   failwith "À compléter"
