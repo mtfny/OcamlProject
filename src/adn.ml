@@ -8,7 +8,7 @@ type dna = base list
 (*                               ECHAUFFEMENT                                *)
 (*---------------------------------------------------------------------------*)
 
-
+(* Convertit une base en sa représentation en chaîne de caractères. *)
 let string_of_base (b : base) : string =
   match b with
   | A -> "A"
@@ -30,7 +30,7 @@ let explode (str : string) : char list =
   List.rev (explode_aux str [] 0)
 
 
-(* conversions *)
+(* Convertit un caractère en une base d'ADN correspondante. *)
 let base_of_char (c : char) : base =
   match c with 
   | 'A' -> A
@@ -39,11 +39,11 @@ let base_of_char (c : char) : base =
   | 'T' -> T
   | _ -> WC 
 ;;
-
+(* Convertit une chaîne de caractères en une liste de bases d'ADN. *)
 let dna_of_string (s : string) : base list = (*on on converti la chaine en tableau puis on convertit les caractères en base nucléique*)
   List.map base_of_char (explode s)
 
-
+(* Convertit une séquence d'ADN en une chaîne de caractères. *)
 let rec string_of_dna (seq : dna) : string =
   match seq with
   | [] -> ""
@@ -59,7 +59,7 @@ let rec string_of_dna (seq : dna) : string =
    de $l$ de la forme $\langle x_i, \dots x_{j}$, o\`u $1 \leq i \leq j\leq n$.
  *)
 
-
+(* Découpe un préfixe d'une liste et renvoie le suffixe restant. *)
 (* if list = pre@suf, return Some suf. otherwise, return None *)
 let rec cut_prefix (slice : 'a list) (list : 'a list) : 'a list option =
   match (slice,list) with
@@ -92,6 +92,7 @@ let rec first_occ_aux (slice : 'a list) (before : 'a list) (after : 'a list): ('
 (* return the prefix and the suffix of the first occurrence of a slice,
    or None if this occurrence does not exist.
 *)
+   (* Trouve la première occurrence d'une tranche dans une liste et renvoie le préfixe et le suffixe. *)
 let first_occ (slice : 'a list) (list : 'a list)
     : ('a list * 'a list) option =
     first_occ_aux slice [] list 
@@ -101,7 +102,7 @@ let first_occ (slice : 'a list) (list : 'a list)
   first_occ [1; 3] [1; 1; 1; 2; 3; 4; 1; 2] = None
  *)
 
-
+(* Génère une liste de toutes les tranches dans 'list' délimitées par 'start' et 'stop'. *)
 let rec slices_between
           (start : 'a list) (stop : 'a list) (list : 'a list) : 'a list list =
   let l1 = first_occ start list in
@@ -116,7 +117,7 @@ let rec slices_between
 (*
   slices_between [1; 1] [1; 2] [1; 1; 1; 1; 2; 1; 3; 1; 2] = [[1]]
  *)
-
+(* Coupe les gènes d'une séquence d'ADN en utilisant des séquences de début et de fin spécifiques. *)
 let cut_genes (dna : dna) : (dna list) =
   let dna_list = explode (string_of_dna dna) in
   slices_between [A; T; G] [T; A; A] (List.map base_of_char dna_list)
@@ -194,6 +195,7 @@ let rec maximum_in_ll (ll : 'a list list) (list : 'a list) :'a list =
       else if List.length e1 > List.length list then maximum_in_ll reste e1
       else maximum_in_ll reste list
 *)
+(* Identifie la séquence consensus dans une liste de séquences. *)
 let consensus (list : 'a list) : 'a consensus =
   match list with
   | [] -> No_consensus
@@ -246,7 +248,7 @@ let rec consensus_sequence_aux (ll : 'a list list) (res : 'a consensus list) : '
    position  in the sequences. the lists must be of same length. if all lists
    are empty, return the empty sequence.
  *)
-
+(* Calcule la séquence consensus pour une liste de listes de séquences. *)
 let consensus_sequence (ll : 'a list list) : 'a consensus list =
   List.rev (consensus_sequence_aux ll [])
 
