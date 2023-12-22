@@ -1,7 +1,7 @@
 open Regex_base
 
 
-(*fonction qui ajoute les elements de a dans b*)
+(*fonction qui ajoute les elements de b dans a*)
 let rec append a b =
   match a with
   | [] -> b
@@ -62,14 +62,14 @@ let rec product_aux l ll =
   |_ -> 
     match ll with 
     | [] -> []
-    | tete :: reste -> (union_sorted l tete) :: product_aux l reste
+    | tete :: reste -> (append l tete) :: product_aux l reste
 
 
 let rec product l1 l2 =
   match l1 with 
   | [] -> product_aux [] l2
   | [tete] -> product_aux tete l2
-  | tete :: reste -> union_sorted (product_aux tete l2) (product reste l2) 
+  | tete :: reste -> append (product_aux tete l2) (product reste l2) 
   
 
 let create_combinations alphabet =
@@ -88,8 +88,10 @@ let rec enumerate alphabet e =
       | _ -> None) (*Si l'un des appels récursifs retourne None,cela signifie qu'il y a une expression infine. Alors Alt(e1,e2) l'est aussi*)
   |Concat (e1,e2) ->
     (match (enumerate alphabet e1, enumerate alphabet e2) with
-    | (Some l1, Some l2) -> Some(List.flatten (List.map (fun x -> List.map (fun y -> append x y) l2) l1)) (*On crée  liste de listes de listes contenant concaténation d'une chaîne x de l1 avec chaque chaîne y de l2 et on utilisie List.flatten pour repasser à une liste de listes   *)
+    | (Some l1, Some l2) -> Some (product l1 l2) (*On concatene les elements*)
     | _ -> None (*meme cas que Alt*))
+
+    
 let rec alphabet_expr e =
   failwith "À compléter"
 
