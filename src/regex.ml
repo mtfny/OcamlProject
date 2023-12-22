@@ -48,29 +48,13 @@ let rec is_finite e =
   | Star exp -> is_empty exp   (*l'expression e* est finie seulement si e est vide*)
 
 
-let rec is_null ll = 
-  match ll with 
-  | [] -> true
-  | tete :: reste -> 
-    match tete with 
-    | [] -> is_null reste
-    | _ -> false 
-
-let rec product_aux l ll =
-  match l with 
-  |[] -> if is_null ll then [] else ll
-  |_ -> 
-    match ll with 
-    | [] -> []
-    | tete :: reste -> (append l tete) :: product_aux l reste
-
 
 let rec product l1 l2 =
-  match l1 with 
-  | [] -> product_aux [] l2
-  | [tete] -> product_aux tete l2
-  | tete :: reste -> append (product_aux tete l2) (product reste l2) 
-  
+  match l1 with
+  | [] -> []
+  | tete1 :: reste1 ->
+      let tmp = List.map (fun tete2 -> append tete1 tete2) l2 in
+      append tmp (product reste1 l2)
 
 let create_combinations alphabet =
     List.map (fun a -> [a]) alphabet
