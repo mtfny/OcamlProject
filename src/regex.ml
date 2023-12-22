@@ -110,13 +110,10 @@ let rec list_match l1 l2 =
   | ([],_) -> false 
   | (_,[]) -> false 
   | (tete1 :: reste1 ,tete2 :: reste2) -> 
-    if tete != tete then 
+    if tete1 != tete2 then 
       false 
     else 
       list_match reste1 reste2
-
-
-
 
 let rec list_l_in_ll l ll = 
   match ll with 
