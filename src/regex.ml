@@ -125,7 +125,9 @@ let rec list_l_in_ll l ll =
       list_l_in_ll l reste 
 
 let accept_partial e w =
-  let langage_reconnu = enumerate w e in 
+  let alphabet = sort_uniq (union_sorted (alphabet_expr e) w) in
+  let langage_reconnu = enumerate alphabet e in 
   match langage_reconnu with 
   | None -> Infinite
-  | Some l -> if list_l_in_ll then Accept else Reject 
+  | Some l -> if list_l_in_ll w l then Accept else Reject 
+
