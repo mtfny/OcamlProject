@@ -93,10 +93,41 @@ let rec enumerate alphabet e =
 
     
 let rec alphabet_expr e =
-  failwith "À compléter"
+  match e with 
+  | Eps -> []
+  | Base a -> [a] 
+  | Joker -> []
+  | Concat (e1, e2) -> union_sorted (alphabet_expr e1 )  (alphabet_expr e2 )
+  | Alt (e1, e2) -> union_sorted (alphabet_expr e1 ) (alphabet_expr e2 )
+  | Star exp -> alphabet_expr exp
 
 type answer =
   Infinite | Accept | Reject
 
+let rec list_match l1 l2 = 
+  match l1,l2 with 
+  | ([],[]) -> true 
+  | ([],_) -> false 
+  | (_,[]) -> false 
+  | (tete1 :: reste1 ,tete2 :: reste2) -> 
+    if tete1 != tete2 then 
+      false 
+    else 
+      list_match reste1 reste2
+
+let rec list_l_in_ll l ll = 
+  match ll with 
+  | [] -> false 
+  | tete :: reste -> 
+    if list_match l tete then 
+      true
+    else
+      list_l_in_ll l reste 
+
 let accept_partial e w =
-  failwith "À compléter"
+  let alphabet = sort_uniq (union_sorted (alphabet_expr e) w) in
+  let langage_reconnu = enumerate alphabet e in 
+  match langage_reconnu with 
+  | None -> Infinite
+  | Some l -> if list_l_in_ll w l then Accept else Reject 
+
