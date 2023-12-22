@@ -41,9 +41,17 @@ let rec is_finite e =
   | Star exp -> if is_empty exp then true else false   (*l'expression e* est finie seulement si e est vide*)
 
 
+let rec is_null ll = 
+  match ll with 
+  | [] -> true
+  | tete :: reste -> 
+    match tete with 
+    | [] -> is_null reste
+    | _ -> false 
+
 let rec product_aux l ll =
   match l with 
-  |[] -> ll 
+  |[] -> if is_null ll then [] else ll
   |_ -> 
     match ll with 
     | [] -> []
@@ -52,7 +60,7 @@ let rec product_aux l ll =
 
 let rec product l1 l2 =
   match l1 with 
-  | [] -> l2 
+  | [] -> product_aux [] l2
   | [tete] -> product_aux tete l2
   | tete :: reste -> union_sorted (product_aux tete l2) (product reste l2) 
   
